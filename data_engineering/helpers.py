@@ -13,7 +13,7 @@ nltk.download('punkt')
 
 english_stopwords = set(stopwords.words('english'))
 newStopWords = {"’", "said", "u"}
-english_stopwords.extend(newStopWords)
+english_stopwords.union(*newStopWords)
 lemmatizer = WordNetLemmatizer()
 
 
@@ -66,7 +66,6 @@ def classic_nlp_preprocessing(df: pd.DataFrame, columns: list, remove_stop_words
         
         if do_lemmatization:
             df[col + "_lemmatized"] = df[col + "_removed_stopwords"].apply(lemmatize)
-            # df[col + "_lemmatized"] = df[col + "_lemmatized"].apply(remove_stopwords)
         else:
             df[col + "_lemmatized"] = df[col + "_tokenized"].apply(lemmatize)
 

@@ -2,7 +2,7 @@ import pandas as pd
 import gensim
 import argparse
 
-def run_lda_experiment(num_topics:int, num_passes:int, data_input_path:str, data_output_path:str) -> None:
+def run_lda_experiment(num_topics:int, num_passes:int, data_input_path:str, data_output_path:str, dataset_name:str) -> None:
     """This function icludes the workflow to perform Latent Dirichlet Allocation. 
     It loads the data from the specified path, transforms it, trains an LDA model and performs inference.
     Results are saved in the specified output path.
@@ -12,6 +12,7 @@ def run_lda_experiment(num_topics:int, num_passes:int, data_input_path:str, data
     num-passes -- the number of passes/epochs for training
     data-input-path -- relative path to the input data (like ./.../filename.csv)
     data-output-path -- relative path to the output data (like ./.../)
+    dataset-name -- name of the dataset used for training
     """
     # Load processed data from csv
     df = pd.read_csv(data_input_path)
@@ -55,11 +56,13 @@ if __name__ == "__main__":
     parser.add_argument("--num-passes", type=int)
     parser.add_argument("--data-input-path", type=str)
     parser.add_argument("--data-output-path", type=str)
+    parser.add_argument("--dataset-name")
     args = parser.parse_args()
     # Start experiment
     run_lda_experiment(
         args.num_topics, 
         args.num_passes,
         args.data_input_path,
-        args.data_output_path
+        args.data_output_path,
+        args.dataset_name
     )

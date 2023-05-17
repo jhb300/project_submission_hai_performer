@@ -1,4 +1,5 @@
 from datetime import datetime
+import pandas as pd
 import os
 
 
@@ -24,3 +25,9 @@ def get_file_names(directory: str) -> list:
     file_names = list(map(lambda file_name: os.path.join(directory, file_name), file_names))
 
     return list(filter(lambda x: x[-4:] == ".csv", file_names))
+
+
+def replace_with_monday(datetime_column: pd.Series) -> pd.Series:
+    "Get the Monday of the same week for each datetime"
+
+    return datetime_column - pd.to_timedelta(datetime_column.dt.dayofweek, unit='D')

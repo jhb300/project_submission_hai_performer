@@ -1,6 +1,6 @@
 import argparse
 import pandas as pd
-from timeseries_engineering_helpers import normalize_datetime, get_file_names
+from timeseries_engineering_helpers import normalize_datetime, get_file_names, replace_with_monday
 import logging
 
 
@@ -21,7 +21,7 @@ def process_all_files(input_path: str="../modelling/output_data/", output_path="
 
     for file in csv_file_names:
         df = pd.read_csv(file, low_memory=False, index_col=0)
-        ts_df = get_topic_ts(df, freq='D')
+        ts_df = get_topic_ts(df, freq=freq)
         file_name = file.split("/")[-1]
         logging.info(f"Processed file {file_name}, now exporting...")
         ts_df.to_csv(f"{output_path}/ts_{file_name}", index=True)
@@ -33,11 +33,18 @@ def get_topic_ts(df: pd.DataFrame, freq: str='D') -> pd.DataFrame:
     Datetime objects in the index are normalized to be at midnight.
     """
 
+    # Make sure that weekly frequency always starts at mondays
+    assert len(freq) == 1 if freq[0] == 'W' else True, "This function does not support weekly frequency with start days other than monday!"
+
     df['published_at'] = pd.to_datetime(df['published_at'])
     df['published_at'] = df['published_at'].apply(normalize_datetime)
 
+    # Get weeks monday for each date if frequence is weekly
+    df['published_at'] = replace_with_monday(df['published_at']) if freq == 'W' else df['published_at']
+
     min_date = df['published_at'].min()
     max_date = df['published_at'].max()
+
     df.set_index('published_at', inplace=True)
     date_range = pd.date_range(min_date, max_date, freq=freq)
 
@@ -61,6 +68,9 @@ def get_topic_ts(df: pd.DataFrame, freq: str='D') -> pd.DataFrame:
                 accumulated_scores = pd.concat([accumulated_scores, pd.DataFrame(columns=[topic])], axis=1)
                 accumulated_scores[topic] = 0
                 accumulated_scores.loc[index, topic] = score
+
+    accumulated_scores.sort_index(axis=0, inplace=True)
+    accumulated_scores.sort_index(axis=1, inplace=True)
 
     return accumulated_scores.fillna(0)
 

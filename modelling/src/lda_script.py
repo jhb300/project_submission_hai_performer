@@ -36,7 +36,7 @@ def run_lda_experiment(num_topics:int, num_passes:int, data_input_path:str,
                                    workers = 8)
     
     # Save Training results 
-    model_name = f'lda_model_topics_{num_topics}_passes_{num_passes}'
+    model_name = f'lda_model_topics_{num_topics}_passes_{num_passes}_on_{input_column}'
     model_path = f'./models/LDA/{model_name}'
     lda_model.save(model_path)
     # Run Inference 

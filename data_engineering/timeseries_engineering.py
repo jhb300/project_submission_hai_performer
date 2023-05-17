@@ -1,0 +1,75 @@
+import argparse
+import pandas as pd
+from timeseries_engineering_helpers import normalize_datetime, get_file_names
+import logging
+
+
+# Logging level configuration
+logging.basicConfig(level=logging.DEBUG, format='%(process)d - %(levelname)s - %(message)s')
+
+
+def process_all_files(input_path: str="../modelling/output_data/", output_path="timeseries_data", freq: str="D") -> None:
+    """
+    Takes all files in the input_path and creates csv files with 
+    topic number as column name and date as the index.
+    Finally export to specified output_path with the file name being
+    ts_original_file_name.csv.
+    """
+
+    # Discover all files in input path and filter for csv files only.
+    csv_file_names = get_file_names(input_path)
+
+    for file in csv_file_names:
+        df = pd.read_csv(file, low_memory=False, index_col=0)
+        ts_df = get_topic_ts(df, freq='D')
+        file_name = file.split("/")[-1]
+        logging.info(f"Processed file {file_name}, now exporting...")
+        ts_df.to_csv(f"{output_path}/ts_{file_name}", index=True)
+
+
+def get_topic_ts(df: pd.DataFrame, freq: str='D') -> pd.DataFrame:
+    """
+    Return a DataFrame containing the columns as topics with the dates with dates as index.
+    Datetime objects in the index are normalized to be at midnight.
+    """
+
+    df['published_at'] = pd.to_datetime(df['published_at'])
+    df['published_at'] = df['published_at'].apply(normalize_datetime)
+
+    min_date = df['published_at'].min()
+    max_date = df['published_at'].max()
+    df.set_index('published_at', inplace=True)
+    date_range = pd.date_range(min_date, max_date, freq=freq)
+
+    accumulated_scores = pd.DataFrame(index=date_range)
+
+    for index, row in df.iterrows():
+
+        if pd.notna(row['topic_class']):
+            topic_class = eval(row['topic_class'])
+        else:
+            continue
+
+        # Accumulate the scores for each topic number
+        for topic, score in topic_class:
+            if topic in accumulated_scores.columns:
+                if index in accumulated_scores.index:
+                    accumulated_scores.loc[index, topic] = accumulated_scores.loc[index, topic] + score
+                else:
+                    accumulated_scores.loc[index, topic] = score
+            else:
+                accumulated_scores = pd.concat([accumulated_scores, pd.DataFrame(columns=[topic])], axis=1)
+                accumulated_scores[topic] = 0
+                accumulated_scores.loc[index, topic] = score
+
+    return accumulated_scores.fillna(0)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process files to generate time series data.')
+    parser.add_argument('-i', '--input_path', type=str, default='../modelling/output_data/', help='Relative path to input files')
+    parser.add_argument('-o', '--output_path', type=str, default='timeseries_data', help='Relative path for output time series data')
+    parser.add_argument('--freq', type=str, default='D', help='Frequency for time series data (e.g., D for daily)')
+
+    args = parser.parse_args()
+    process_all_files(args.input_path, args.output_path, args.freq)

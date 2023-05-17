@@ -2,7 +2,8 @@ import pandas as pd
 import gensim
 import argparse
 
-def run_lda_experiment(num_topics:int, num_passes:int, data_input_path:str, data_output_path:str) -> None:
+def run_lda_experiment(num_topics:int, num_passes:int, data_input_path:str, 
+                       data_output_path:str, dataset_name:str,input_column:str) -> None:
     """This function icludes the workflow to perform Latent Dirichlet Allocation. 
     It loads the data from the specified path, transforms it, trains an LDA model and performs inference.
     Results are saved in the specified output path.
@@ -12,12 +13,14 @@ def run_lda_experiment(num_topics:int, num_passes:int, data_input_path:str, data
     num-passes -- the number of passes/epochs for training
     data-input-path -- relative path to the input data (like ./.../filename.csv)
     data-output-path -- relative path to the output data (like ./.../)
+    dataset-name -- name of the dataset used for training
+    input-column -- name of the column with the text data
     """
     # Load processed data from csv
     df = pd.read_csv(data_input_path)
     # Convert into list of lists
     processed_docs = []
-    for i in list(df.short_description_lemmatized):
+    for i in list(df[input_column]):
         if type(i)==str:
             processed_docs.append(eval(i))
     # Create a dictionary from 'processed_docs' containing the number of times a word appears in the training
@@ -43,9 +46,8 @@ def run_lda_experiment(num_topics:int, num_passes:int, data_input_path:str, data
             bow_vector = dictionary.doc2bow(eval(doc))
             return lda_model[bow_vector]
     # Add topic labels to original dataset and save to output path
-    df['topic_class'] = df['short_description_lemmatized'].apply(lambda x: make_inference_on_doc(x))
-    df_out = df[['published_at','topic_class']]
-    df_out.to_csv(f"{data_output_path}data_{model_name}_{dataset_name}")
+    df['topic_class'] = df[input_column].apply(lambda x: make_inference_on_doc(x))
+    df.to_csv(f"{data_output_path}data_{model_name}_{dataset_name}")
 
 
 # Retrive passed arguments
@@ -55,11 +57,15 @@ if __name__ == "__main__":
     parser.add_argument("--num-passes", type=int)
     parser.add_argument("--data-input-path", type=str)
     parser.add_argument("--data-output-path", type=str)
+    parser.add_argument("--dataset-name", type=str)
+    parser.add_argument("--input-column", type=str)
     args = parser.parse_args()
     # Start experiment
     run_lda_experiment(
         args.num_topics, 
         args.num_passes,
         args.data_input_path,
-        args.data_output_path
+        args.data_output_path,
+        args.dataset_name,
+        args.input_column
     )

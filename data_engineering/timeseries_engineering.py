@@ -46,9 +46,11 @@ def get_topic_ts(df: pd.DataFrame, freq: str='D') -> pd.DataFrame:
     max_date = df['published_at'].max()
 
     df.set_index('published_at', inplace=True)
+    freq = "W-MON" if freq == "W" else freq
     date_range = pd.date_range(min_date, max_date, freq=freq)
 
     accumulated_scores = pd.DataFrame(index=date_range)
+    logging.debug(accumulated_scores.index)
 
     for index, row in df.iterrows():
 

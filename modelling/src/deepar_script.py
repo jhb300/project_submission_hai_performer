@@ -8,7 +8,6 @@ from gluonts.evaluation.metrics import mape
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from datetime import datetime
 
 prediction_length = 56
@@ -18,13 +17,13 @@ max_epochs = 400
 
 
 def run_deepar_experiment(
-    input_paths: list(str),
+    input_paths: list,
     target_col: str,
-    past_rts_col: list(str),
+    past_rts_col: list,
+    trainer_kwargs: dict,
     prediction_length: int = 56,
     num_layers: int = 2,
     hidden_size: int = 40,
-    max_epochs: int = 5
 ) -> dict:
     """
     Loads data and trains a DeepAR (torch) model with the passes parameters 
@@ -38,18 +37,23 @@ def run_deepar_experiment(
         Name of the target column.
     past_rts_col 
         List of the past rts column (dynamic) names.
+    trainer_kwargs
+        Arguments to pass to the torch Trainer.
     prediction_length
         Specifies the forecast horizon and backtest window len.
     num_layers 
         Number of hidden layers.
     hidden_size 
         Number of nodes per hidden layer.
-    max_epochs 
-        Max number of training epochs.
-
+        
+        
     Returns
     -------
-    Forecast Metrics
+    forecasts, 
+        Yields the forecast timeseries.
+    tss
+         Yields the corresponding ground truth series.
+    agg_metrics
         Dictionary with agregated metrics.
     """
 
@@ -90,9 +94,8 @@ def run_deepar_experiment(
         prediction_length=prediction_length,
         freq="W",
         num_layers=num_layers,  # Number of RNN layers (default: 2).
-        # Number of RNN cells for each layer (default: 40).
-        hidden_size=hidden_size,
-        trainer_kwargs={"max_epochs": max_epochs}
+        hidden_size=hidden_size, # Number of RNN cells per layer (default: 40).
+        trainer_kwargs=trainer_kwargs
     ).train(training_data)
 
     # Make inference
@@ -103,9 +106,9 @@ def run_deepar_experiment(
     )
     forecasts = list(forecast_it)
     tss = list(ts_it)
+    
     # Compute metrics
-    # Define the quantiles for evaluation
     evaluator = Evaluator(quantiles=[0.1, 0.5, 0.9])
     agg_metrics, item_metrics = evaluator(tss, forecasts)
 
-    return agg_metrics
+    return forecasts, tss, agg_metrics

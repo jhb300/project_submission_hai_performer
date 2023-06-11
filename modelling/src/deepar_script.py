@@ -21,9 +21,12 @@ def run_deepar_experiment(
     target_col: str,
     past_rts_col: list,
     trainer_kwargs: dict,
+    context_length: int,
     prediction_length: int = 56,
     num_layers: int = 2,
     hidden_size: int = 40,
+    weight_decay: float = 1e-8,
+    lr: float = 1e-3,
 ) -> dict:
     """
     Loads data and trains a DeepAR (torch) model with the passes parameters 
@@ -45,6 +48,8 @@ def run_deepar_experiment(
         Number of hidden layers.
     hidden_size 
         Number of nodes per hidden layer.
+    weight_decay
+        Weight decay regularization parameter (default: 1e-8).
         
         
     Returns
@@ -95,6 +100,9 @@ def run_deepar_experiment(
         freq="W",
         num_layers=num_layers,  # Number of RNN layers (default: 2).
         hidden_size=hidden_size, # Number of RNN cells per layer (default: 40).
+        weight_decay=weight_decay,
+        context_length=context_length,
+        lr = lr,
         trainer_kwargs=trainer_kwargs
     ).train(training_data)
 

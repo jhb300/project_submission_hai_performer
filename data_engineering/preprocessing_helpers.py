@@ -91,15 +91,15 @@ def replace_html_number_codes(text: str) -> str:
     return html.unescape(text) if type(text) == str else text
 
 
-def create_weekly_time_series(df: pd.DataFrame) -> pd.DataFrame:
+def create_weekly_time_series(df: pd.DataFrame, format: str) -> pd.DataFrame:
     """
     Create GDelt data DataFrame with EventCode as columns and DATEADDED as index
     and bring it into weekly aggregated format.
     """
 
-    df['DATEADDED'] = pd.to_datetime(df['DATEADDED'], format='%Y%m%d%H%M%S')
+    df['DATEADDED'] = pd.to_datetime(df['DATEADDED'], format=format)
     df.set_index('DATEADDED', inplace=True)
     weekly_data = df.groupby(['EventCode', pd.Grouper(freq='W-MON')])['NumArticles'].sum().reset_index()
-    weekly_time_series = weekly_data.pivot(index='DATEADDED', columns='EventCode', values='NumArticles')
-
-    return weekly_time_series
+    return weekly_data.pivot(
+        index='DATEADDED', columns='EventCode', values='NumArticles'
+    )

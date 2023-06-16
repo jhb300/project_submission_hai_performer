@@ -4,6 +4,7 @@ from gluonts.dataset.split import split
 from gluonts.evaluation import Evaluator, backtest_metrics
 from gluonts.evaluation import make_evaluation_predictions
 from gluonts.evaluation.metrics import mape
+from gluonts.model.estimator import Estimator
 
 import pandas as pd
 import numpy as np
@@ -12,8 +13,9 @@ from datetime import datetime
 def run_experiment(
     input_paths: list,
     target_col: str,
+    prediction_length: int,
     past_rts_col: list,
-    estimator: gluonts.model.estimator.Estimator,
+    estimator: Estimator,
 ) -> dict:
     """
     Loads data and trains an estimator model with the passes parameters 
@@ -25,6 +27,8 @@ def run_experiment(
         List of data input paths (date column must be Unnamed: 0).
     target_col 
         Name of the target column.
+    prediction_length
+        Length of the prediction horizon.
     past_rts_col 
         List of the past rts column (dynamic) names.
     estimator

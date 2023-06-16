@@ -101,8 +101,6 @@ def run_deepstate_experiment(
         prediction_length=prediction_length, windows=1)
     # Define a Trainer Opject
     trainer = Trainer(
-        # ctx=mx.context.gpu(),
-        # ctx='gpu',
         epochs=max_epochs,
         learning_rate=lr,
         weight_decay=weight_decay

@@ -1,0 +1,2 @@
+sqlalchemy==2.0.16
+gluonts[torch,mxnet]==0.13.2

@@ -14,6 +14,7 @@ def run_experiment(
     input_paths: list,
     target_col: str,
     prediction_length: int,
+    windows: int,
     past_rts_col: list,
     estimator: Estimator,
 ) -> dict:
@@ -29,6 +30,8 @@ def run_experiment(
         Name of the target column.
     prediction_length
         Length of the prediction horizon.
+    windows
+        Number of forecast test windows. 
     past_rts_col 
         List of the past rts column (dynamic) names.
     estimator

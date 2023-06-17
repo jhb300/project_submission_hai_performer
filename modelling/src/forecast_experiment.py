@@ -79,9 +79,9 @@ def run_experiment(
         past_feat_dynamic_real=past_rts_col
     )
     # Split the data for training and testing
-    training_data, test_gen = split(dataset, offset=-prediction_length)
+    training_data, test_gen = split(dataset, offset=-(prediction_length*windows))
     test_data = test_gen.generate_instances(
-        prediction_length=prediction_length, windows=1)
+        prediction_length=prediction_length, windows=windows)
     
     ############################
     #  Training and Inference  #
@@ -95,11 +95,12 @@ def run_experiment(
         predictor=predictor,
         num_samples=100,
     )
-    forecasts = list(forecast_it)
+    forecasts_single = list(forecast_it)
+    forecasts = list(predictor.predict(test_data.input))
     tss = list(ts_it)
     
     # Compute metrics
     evaluator = Evaluator(quantiles=[0.1, 0.5, 0.9])
-    agg_metrics, item_metrics = evaluator(tss, forecasts)
+    agg_metrics, item_metrics = evaluator(tss, forecasts_single)
 
     return forecasts, tss, agg_metrics

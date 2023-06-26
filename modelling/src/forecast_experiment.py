@@ -15,6 +15,7 @@ def run_experiment(
     target_col: str,
     prediction_length: int,
     windows: int,
+    offset:int,
     past_rts_col: list,
     estimator: Estimator,
 ) -> dict:
@@ -32,6 +33,8 @@ def run_experiment(
         Length of the prediction horizon.
     windows
         Number of forecast test windows. 
+    offset
+        Offset for train test split.
     past_rts_col 
         List of the past rts column (dynamic) names.
     estimator
@@ -79,7 +82,7 @@ def run_experiment(
         past_feat_dynamic_real=past_rts_col
     )
     # Split the data for training and testing
-    training_data, test_gen = split(dataset, offset=-(prediction_length*windows))
+    training_data, test_gen = split(dataset, offset=offset)
     test_data = test_gen.generate_instances(
         prediction_length=prediction_length, windows=windows)
     

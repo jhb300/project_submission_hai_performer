@@ -8,12 +8,24 @@ import logging
 logging.basicConfig(level=logging.DEBUG, format='%(process)d - %(levelname)s - %(message)s')
 
 
+# TODO: This directory does not exist anymore!!!
 def process_all_files(input_path: str="../modelling/output_data/", output_path="timeseries_data", freq: str="D") -> None:
     """
     Takes all files in the input_path and creates csv files with 
     topic number as column name and date as the index.
     Finally export to specified output_path with the file name being
     ts_original_file_name.csv.
+    
+    Parameters
+    ----------
+    input_path
+        Directory to scan
+    output_path
+        Directory to save transformed files to
+    freq
+        Frequency of the data in the export.
+        
+    Returns: None, it just saves the results to output_path.
     """
 
     # Discover all files in input path and filter for csv files only.
@@ -31,6 +43,15 @@ def get_topic_ts(df: pd.DataFrame, freq: str='D') -> pd.DataFrame:
     """
     Return a DataFrame containing the columns as topics with the dates with dates as index.
     Datetime objects in the index are normalized to be at midnight.
+    
+    Parameters
+    ----------
+    df
+        DataFrame with raw data to create a time series per topic from
+    freq
+        Frequency of the returned data.
+        
+    Returns: DataFrame containing the topics as columns, each with a time series in specified frequency.
     """
 
     # Make sure that weekly frequency always starts at mondays

@@ -18,7 +18,16 @@ lemmatizer = WordNetLemmatizer()
 
 
 def remove_punctuation_and_lower(text: str) -> str:
-    "Remove punctuation and lower text."
+    """
+    Remove punctuation and lower text.
+
+    Parameters
+    ----------
+    text
+        Some string to apply the function on
+        
+    Returns: String
+    """
 
     text = text.translate(str.maketrans("", "", string.punctuation)) if type(text) == str else text
     text = text.replace( "\\", "") if type(text) == str else text
@@ -27,19 +36,46 @@ def remove_punctuation_and_lower(text: str) -> str:
 
 
 def tokenize(text: str) -> list:
-    "Tokenize if text is string"
+    """
+    Tokenize if text is string.
+
+    Parameters
+    ----------
+    text
+        Some string to tokenize
+        
+    Returns: list containing the tokens
+    """
 
     return word_tokenize(text) if type(text) == str else None
 
 
-def remove_stopwords(tokens) -> list:
-    "Return text without stopwords."
+def remove_stopwords(tokens: list) -> list:
+    """
+    Return text without stopwords.
+
+    Parameters
+    ----------
+    tokens
+        Iterable of tokens
+        
+    Returns: list containing the filtered tokens
+    """
 
     return [t for t in tokens if t not in english_stopwords] if tokens else None
 
 
 def lemmatize(tokens: list) -> list:
-    "Lemmatize all tokens."
+    """
+    Lemmatize all tokens.
+
+    Parameters
+    ----------
+    tokens
+        Iterable of tokens
+        
+    Returns: list containing the word stems of the tokens
+    """
     
     do_not_lemmatize = ("us", "vs")
     return [lemmatizer.lemmatize(token) if token not in do_not_lemmatize else token for token in tokens] if tokens else None
@@ -56,6 +92,22 @@ def classic_nlp_preprocessing(df: pd.DataFrame, columns: list, remove_stop_words
     - Remove stopwords
     - Lemmatize
     Do it only if the corresponding boolean is True.
+    For the newsSpace dataset, there is additional filtering functionality.
+
+    Parameters
+    ----------
+    df
+        DataFrame (containing news headlines)
+    columns
+        Columns to run the specified operations on
+    remove_stop_words
+        Decides if stopwords should be removed or not
+    do_lemmatization
+        Decides if the tokens should be replaced by their word stems
+    newsSpace
+        Perform specailzed filtering if input is newsSpace data
+        
+    Returns: DataFrame containing pre-processed data.
     """
 
     for col in columns:
@@ -86,7 +138,16 @@ def classic_nlp_preprocessing(df: pd.DataFrame, columns: list, remove_stop_words
 
 
 def replace_html_number_codes(text: str) -> str:
-    "Replace HTML number codes with Unicode characters."
+    """
+    Replace HTML number codes with Unicode characters.
+
+    Parameters
+    ----------
+    text
+        String to apply replacement on
+        
+    Returns: String with Unicode characters.
+    """
 
     return html.unescape(text) if type(text) == str else text
 
@@ -95,6 +156,15 @@ def create_weekly_time_series(df: pd.DataFrame, format: str) -> pd.DataFrame:
     """
     Create GDelt data DataFrame with EventCode as columns and DATEADDED as index
     and bring it into weekly aggregated format.
+
+    Parameters
+    ----------
+    df
+        Input DataFrame
+    format
+        String containing the desired datetime format
+        
+    Returns: DataFrame with CAMEO EventCodes as columns in weekly frequency.
     """
 
     df['DATEADDED'] = pd.to_datetime(df['DATEADDED'], format=format)

@@ -26,13 +26,21 @@ def convert(input: str="nlp_data/newsSpace.xml", cols: list=columns) -> None:
     Convert the file of the input path from XML to CSV format and save it to 
     the original directory.
 
+    Parameters
+    ----------
+    input
+        Input file to convert
+    cols
+        Columns to extract from the XML file
+        
+    Returns: None, it just saves the results to the input directory.
     """
 
     # Parsing the XML file
     rows = []
     xmlparse = Xet.parse(input)
     root = xmlparse.getroot()
-    root_list = [element for element in root.iter()][1:] # Excluding the root element itself.
+    root_list = list(root.iter())[1:]
 
     logging.debug(f"Starting to assemble the data for the DataFrame. Starting with: {root_list[0]}, Text: {root_list[0].text}")
 
@@ -41,7 +49,7 @@ def convert(input: str="nlp_data/newsSpace.xml", cols: list=columns) -> None:
         if count % 1000 == 0 and count != 0:
             percentage_done = (count / len(root_list)) * 100
             logging.info(f"Processed another thousand elments, now at {round(percentage_done, 6)}%")
-        
+
         row = []
         for col in cols:
             if root_list[0].tag == col:

@@ -14,8 +14,23 @@ text_cols = ['title', 'short_description', 'description']
 
 def process_data(input_path: str = "nlp_data/cnbc_news_dataset.csv", drop_list: list = drop_list, text_cols: list = text_cols, remove_stop_words: bool = True, do_lemmatization: bool = True) -> None:
     """
-    Apply preprocessing after replacing html number codes.
+    Apply preprocessing after replacing HTML number codes.
     Save to the same directory as the input path.
+    
+    Parameters
+    ----------
+    input_path
+        Relative or absolute path to read the csv file from
+    drop_list
+        List of attributes to drop from the input data
+    text_cols
+        Columns to replace the HTML number codes on
+    remove_stop_words
+        Whether stop words should be removed or not
+    do_lemmatization
+        Decides if the tokens should be replaced by their word stems
+        
+    Returns: None, it just exports the result to the input location.
     """
 
     df = pd.read_csv(input_path, header=0, low_memory=False)

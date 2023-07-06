@@ -15,6 +15,13 @@ The aim of the project is to answer the question of whether an abstract represen
 
 ## How to use this repository
 
+### Requirements
+Install the requirements using the following command:
+```bash
+pip install -r requirements.txt
+```
+
+### Project Structure
 The project is divided into 3 separate workstreams: 
 
 1. Data Collection

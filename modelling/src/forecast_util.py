@@ -1,19 +1,20 @@
 import matplotlib.pyplot as plt
 
-def plot_forecast(tss:list, forecasts:list, path:str = None) -> None:
+
+def plot_forecast(tss: list, forecasts: list, path: str = None) -> None:
     """
-    Plots the training target timeseries and the predicted forecast(s). 
-    If forcasts is an array of muliple forecast windows, these
-    will be ploted acordingly.
+    Plots the training target timeseries and the predicted forecast(s).
+    If forecasts is an array of multiple forecast windows, these
+    will be placed accordingly.
 
     Parameters
     ----------
-    tss 
+    tss
         Yields the corresponding ground truth series.
-    forecasts 
+    forecasts
         Yields the forecast timeseries.
-        
-        
+
+
     Returns: None
     """
     # Plot TTS

@@ -13,17 +13,22 @@ def plot_forecast(tss: list, forecasts: list, path: str = None) -> None:
         Yields the corresponding ground truth series.
     forecasts
         Yields the forecast timeseries.
+    path
+        Specify a path to store the plot.
 
 
     Returns: None
     """
+
     # Plot TTS
     for ts in tss:
         plt.plot(ts.to_timestamp(), color="black")
+
     # Plot forecast(s)
     for forecast in forecasts:
         forecast.plot()
     plt.legend(["True values"], loc="upper left", fontsize="large")
+
     # Save figure
     if path:
         plt.savefig(path)

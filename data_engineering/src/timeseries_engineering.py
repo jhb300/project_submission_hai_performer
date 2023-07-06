@@ -17,7 +17,7 @@ logging.basicConfig(
 def process_all_files(
     input_path: str = "modelling/output_data/",
     output_path="data_engineering/timeseries_data",
-    freq: str = "D",
+    freq: str = "W",
 ) -> None:
     """
     Takes all files in the input_path and creates csv files with
@@ -48,7 +48,7 @@ def process_all_files(
         ts_df.to_csv(f"{output_path}/ts_{file_name}", index=True)
 
 
-def get_topic_ts(df: pd.DataFrame, freq: str = "D") -> pd.DataFrame:
+def get_topic_ts(df: pd.DataFrame, freq: str = "W") -> pd.DataFrame:
     """
     Return a DataFrame containing the columns as topics with the dates with dates as index.
     Datetime objects in the index are normalized to be at midnight.

@@ -1,13 +1,11 @@
 # Importing the necessary packages
 from gluonts.dataset.pandas import PandasDataset
 from gluonts.dataset.split import split
-from gluonts.evaluation import Evaluator, backtest_metrics
+from gluonts.evaluation import Evaluator
 from gluonts.evaluation import make_evaluation_predictions
-from gluonts.evaluation.metrics import mape
 from gluonts.model.estimator import Estimator
 
 import pandas as pd
-import numpy as np
 from datetime import datetime
 
 
@@ -51,6 +49,7 @@ def run_experiment(
     agg_metrics
         Dictionary with aggregated metrics.
     """
+
     ###############
     #  Load Data  #
     ###############
@@ -59,20 +58,23 @@ def run_experiment(
     for file_path in input_paths:
         # Load input data
         temp_df = pd.read_csv(file_path)
+
         # Format DataFrame
-        # temp_col_map = {i:f"tts_{i}" for i in temp_df.columns if i.isnumeric()}
         temp_df = temp_df.rename(columns={"Unnamed: 0": "Week"})
         temp_df["Week"] = temp_df["Week"].apply(lambda x: datetime.fromisoformat(x))
         temp_df = temp_df.set_index("Week")
+
         # Rename Columns
         temp_col_map = {i: f"ts_{i}" for i in temp_df.columns}
         temp_df = temp_df.rename(columns=temp_col_map)
         df_input_list.append(temp_df)
+
     # Join to single DataFrame
     ts_df = df_input_list[0]
     for remaining_df in df_input_list[1:]:
         ts_df = ts_df.join(remaining_df)
     ts_df = ts_df.reset_index()
+
     # Convert to GluonTS Dataset
     dataset = PandasDataset(
         ts_df,
@@ -81,6 +83,7 @@ def run_experiment(
         freq="W",
         past_feat_dynamic_real=past_rts_col,
     )
+
     # Split the data for training and testing
     training_data, test_gen = split(dataset, offset=offset)
     test_data = test_gen.generate_instances(
@@ -105,6 +108,6 @@ def run_experiment(
 
     # Compute metrics
     evaluator = Evaluator(quantiles=[0.1, 0.5, 0.9])
-    agg_metrics, item_metrics = evaluator(tss, forecasts_single)
+    agg_metrics, _ = evaluator(tss, forecasts_single)
 
     return forecasts, tss, agg_metrics

@@ -24,11 +24,11 @@ The contents and scope of each is described in the respective subsections below:
 - cameo_translation: Translation of the [CAMEO](https://en.wikipedia.org/wiki/Conflict_and_Mediation_Event_Observations) in the GDELT dataset, to natural language.
 - financial_ts: Auxiliary time series containing macro-economic information.
 - web_crawl_links: Links to GDELT data that needs to be crawled (2014 & 2015).
-- downloaded_files: GDELT daily reports, that are scraped in the gdel_web_crawl.ipynb notebook.
+- downloaded_files: GDELT daily reports, that are scraped in the gdelt_web_crawl.ipynb notebook.
 - gdelt_web_crawl.ipynb: Notebook to execute the retrieval of the GDELT data between 2014 and 2015.
 
 ### Data Engineering
-- exploration: All exploratory notebooks that do preprocessing and transformation on the auxilliary/related cnbc_news dataset as well as on GDELT. The notebook containing the track record measuring the market performance of the model is included here too.
+- exploration: All exploratory notebooks that do preprocessing and transformation on the auxiliary/related cnbc_news dataset as well as on GDELT. The notebook containing the track record measuring the market performance of the model is included here too.
 - financial_ts: Central directory containing all processed financial data (indices and related time series), serving as a single point of truth w.r.t. the financial data for the modelling workstream.
 - nlp_data: Contains the preprocessed cnbc_news dataset, ready for clustering by the modelling workstream.
 - src: Contains preprocessing scripts for the cnbc_news dataset and for transforming the clustered cnbc_news data into time series with weekly frequency. The util directory contains helper scripts that are used by both the exploratory notebooks and the preprocessing scripts.

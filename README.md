@@ -14,9 +14,9 @@ Course: WWI21DSB
 
 The project is divided into 3 separate workstreams: 
 
-1. Data Collection: 
-2. Data Engineering:
-3. Modelling:
+1. Data Collection
+2. Data Engineering
+3. Modelling
 
 The contents and scope of each is described in the respective subsections below:
 
@@ -24,6 +24,7 @@ The contents and scope of each is described in the respective subsections below:
 - cameo_translation: Translation of the [CAMEO](https://en.wikipedia.org/wiki/Conflict_and_Mediation_Event_Observations) in the GDELT dataset, to natural language.
 - financial_ts: Auxialliary time series containing macro-economic information.
 - web_crawl_links: Links to GDELT data that needs to be crawled (2014 & 2015).
+- downloaded_files: GDELT daily reports, that are scraped in the gdel_web_crawl.ipynb notebook.
 - gdelt_web_crawl.ipynb: Notebook to execute the retrieval of the GDELT data between 2014 and 2015.
 
 ### Data Engineering

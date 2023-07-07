@@ -38,7 +38,7 @@ The contents and scope of each is described in the respective subsections below:
 - gdelt_web_crawl.ipynb: Notebook to execute the retrieval of the GDELT data between 2014 and 2015.
 
 ### Data Engineering
-- exploration: All exploratory notebooks that do preprocessing and transformation on the auxiliary/related cnbc_news dataset as well as on GDELT. The notebook containing the track record measuring the market performance of the model is included here too.
+- exploration: All exploratory notebooks that do preprocessing and transformation on the auxiliary/related cnbc_news dataset as well as on GDELT. The track_record notebook contains the track record measures the market performance of the model. The track_record_comparison notebook compares two models that were trained with the same hyperparameters, but one with the GDelt dataset and the other one without it.
 - financial_ts: Central directory containing all processed financial data (indices and related time series), serving as a single point of truth w.r.t. the financial data for the modelling workstream.
 - nlp_data: Contains the preprocessed cnbc_news dataset, ready for clustering by the modelling workstream.
 - src: Contains preprocessing scripts for the cnbc_news dataset and for transforming the clustered cnbc_news data into time series with weekly frequency. The util directory contains helper scripts that are used by both the exploratory notebooks and the preprocessing scripts.
@@ -50,6 +50,8 @@ The contents and scope of each is described in the respective subsections below:
 - project_architecture_v2.png: Contains a diagram of the adapted version of the project including GDELT.
 - project_documentation.pdf: The detailed documentation of the project. Including business use case, motivation and explanation of all workstreams.
 - track_record.csv: Comparison of the models performance with the performance of the index that the model trades on.
+- track_record_gdelt.csv: Comparison of the models performance with the performance of the index that the model trades on using a once trained model with GDelt as related time series.
+- track_record_no_gdelt.csv: Comparison of the models performance with the performance of the index that the model trades on using a once trained model without GDelt as related time series.
 
 ### Modelling
 - backtests: Includes backtests of the final model with 6 to 10 backtest windows using a single model as well as a backtest with individual models trained for each backtest window.

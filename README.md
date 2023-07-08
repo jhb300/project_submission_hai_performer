@@ -16,7 +16,7 @@ The aim of the project is to answer the question of whether an abstract represen
 ## How to use this repository
 
 ### Requirements
-Install the requirements using the following command:
+This project was developed using Python 3.9. Install the requirements using the following command:
 ```bash
 pip install -r requirements.txt
 ```

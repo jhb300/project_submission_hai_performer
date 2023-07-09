@@ -8,10 +8,10 @@ The aim of the project is to answer the question of whether an abstract represen
 ![project diagram](https://github.com/jhb300/project_submission_haiperformer/blob/main/documentation/project_architecture_v2.png?raw=true)
 
 ## Members of the group
-- Marc Grün
-- Jan Henrik Bertrand
-- David Hoffmann
-- Felix Noll
+- Jan Henrik Bertrand (8556462)
+- David Hoffmann (2571020)
+- Marc Grün (9603221)
+- Felix Noll (9467152)
 
 ## How to use this repository
 

@@ -5,7 +5,7 @@ Course: WWI21DSB
 ## Goal of this project
 The aim of the project is to answer the question of whether an abstract representation of world events can be used to improve forecasting of financial markets. To this end, we initially wanted to create a latent representation of our world using information extracted from news articles, which was then supposed to serve as part of the input for a state of the art forecasting model like DeepAR. Later, data from the Global Database of Events, Language and Tone (GDELT) was used for the event information, as depicted in the diagram below.
 
-![project diagram](https://github.com/jhb300/project_submission_haiperformer/blob/main/documentation/project_architecture_v2.png?raw=true)
+![project diagram](https://github.com/jhb300/project_submission_haiperformer/blob/main/documentation/project_architecture_v2_hai_performer.png?raw=true)
 
 ## Members of the group
 - Jan Henrik Bertrand (8556462)

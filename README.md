@@ -48,7 +48,7 @@ The contents and scope of each is described in the respective subsections below:
 ### Documentation
 - project_architecture_v1.png: Contains a diagram of the initial version of the project idea.
 - project_architecture_v2.png: Contains a diagram of the adapted version of the project including GDELT.
-- project_report_haiperformer.pdf: The detailed documentation of the project. Including business use case, motivation and explanation of all workstreams.
+- project_report_hai_performer.pdf: The detailed documentation of the project. Including business use case, motivation and explanation of all workstreams.
 - track_record.csv: Comparison of the models performance with the performance of the index that the model trades on.
 - track_record_gdelt.csv: Comparison of the models performance with the performance of the index that the model trades on using a once trained model with GDelt as related time series.
 - track_record_no_gdelt.csv: Comparison of the models performance with the performance of the index that the model trades on using a once trained model without GDelt as related time series.
